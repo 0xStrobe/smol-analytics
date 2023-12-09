@@ -47,7 +47,7 @@ const scanVisits = async (prefix: string) => {
   const visitsDict = routes.reduce(
     (acc, key, idx) => {
       const visits = parseInt(results[idx] || "0");
-      const route = key.split(":")[2];
+      const route = key.split(":")[3];
       acc[route] = visits;
       return acc;
     },
