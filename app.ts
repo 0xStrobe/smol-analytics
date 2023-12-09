@@ -19,29 +19,31 @@ app.post("/visit/*", (req, res) => {
   res.status(200).send("ok");
 });
 
+const handleHourly = async () => {
+  try {
+    await sendHourlyVisits(DISCORD_WEBHOOK);
+
+    const now = new Date();
+    const isMidnight = now.getHours() === 0;
+    if (isMidnight) {
+      await sendDailyVisits(DISCORD_WEBHOOK);
+    }
+  } catch (err) {
+    console.error("[ERR]", err);
+  }
+};
+
 const main = async () => {
   await redis.connect();
 
-  setInterval(
-    async () => {
-      try {
-        await sendHourlyVisits(DISCORD_WEBHOOK);
-
-        const now = new Date();
-        const isMidnight = now.getHours() === 0;
-        if (isMidnight) {
-          await sendDailyVisits(DISCORD_WEBHOOK);
-        }
-      } catch (err) {
-        console.error("[ERR]", err);
-      }
-    },
-    1000 * 60 * 60,
-  );
+  setInterval(handleHourly, 1000 * 60 * 60);
 
   app.listen(port, () => {
     console.log(`server started at http://localhost:${port}`);
     sendServerStart(DISCORD_WEBHOOK);
+
+    // run hourly handler immediately
+    handleHourly();
   });
 };
 
