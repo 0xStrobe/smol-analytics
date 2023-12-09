@@ -26,8 +26,9 @@ export const recordVisit = async (route: string) => {
   await redis.incr(daily);
 };
 
-export const scanDailyVisits = async () => {
-  const dayId = Math.floor(Date.now() / 1000 / 60 / 60 / 24);
+export const scanDailyVisits = async (isPreviousDay = true) => {
+  const _dayId = Math.floor(Date.now() / 1000 / 60 / 60 / 24);
+  const dayId = isPreviousDay ? _dayId - 1 : _dayId;
   const daily = KEY_PREFIX + `daily:${dayId}:*`;
 
   return await scanVisits(daily);
@@ -95,8 +96,8 @@ export const sendHourlyVisits = async (webhookUrl: string) => {
   });
 };
 
-export const sendDailyVisits = async (webhookUrl: string) => {
-  const visits = await scanDailyVisits();
+export const sendDailyVisits = async (webhookUrl: string, isPreviousDay = true) => {
+  const visits = await scanDailyVisits(isPreviousDay);
   const payload = formatDiscordPayload("daily", visits);
 
   await fetch(webhookUrl, {

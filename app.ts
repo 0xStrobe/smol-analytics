@@ -24,9 +24,9 @@ const handleHourly = async () => {
     await sendHourlyVisits(DISCORD_WEBHOOK);
 
     const now = new Date();
-    const isMidnight = now.getHours() === 0;
-    if (isMidnight) {
-      await sendDailyVisits(DISCORD_WEBHOOK);
+    const isUtc1Am = now.getUTCHours() === 1;
+    if (isUtc1Am) {
+      await sendDailyVisits(DISCORD_WEBHOOK, true);
     }
   } catch (err) {
     console.error("[ERR]", err);
