@@ -50,6 +50,11 @@ const main = async () => {
 main();
 
 // sendServerStop on exit
-process.on("exit", () => {
-  sendServerStop(DISCORD_WEBHOOK);
+process.once("SIGINT", async () => {
+  await sendServerStop(DISCORD_WEBHOOK);
+  process.exit();
+});
+process.once("SIGTERM", async () => {
+  await sendServerStop(DISCORD_WEBHOOK);
+  process.exit();
 });
