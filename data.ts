@@ -63,10 +63,13 @@ const formatDiscordPayload = (mode: "hourly" | "daily", visits: [string, number]
 
   // use the block unicode character to make a bar chart
   const maxVisits = top20[0][1];
+  const longestRoute = top20.reduce((acc, [route]) => {
+    return route.length > acc ? route.length : acc;
+  }, 0);
   const chart = top20
     .map(([route, visits]) => {
       const blocks = Math.floor((visits / maxVisits) * 10);
-      return `${route.padEnd(20, " ")} ${"█".repeat(blocks)} ${visits}`;
+      return `${route.padEnd(longestRoute, " ")} ${"█".repeat(blocks)} ${visits}`;
     })
     .join("\n");
 
