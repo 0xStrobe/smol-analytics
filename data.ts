@@ -107,3 +107,39 @@ export const sendDailyVisits = async (webhookUrl: string) => {
     body: JSON.stringify(payload),
   });
 };
+
+export const sendServerStart = async (webhookUrl: string) => {
+  const payload = {
+    content: "smol analytics server started",
+  };
+
+  try {
+    await fetch(webhookUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch (err) {
+    console.error("[ERR]", err);
+  }
+};
+
+export const sendServerStop = async (webhookUrl: string) => {
+  const payload = {
+    content: "smol analytics server stopped",
+  };
+
+  try {
+    await fetch(webhookUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch (err) {
+    console.error("[ERR]", err);
+  }
+};

@@ -1,6 +1,6 @@
 import express from "express";
 import { config } from "dotenv";
-import { recordVisit, redis, sendDailyVisits, sendHourlyVisits } from "./data";
+import { recordVisit, redis, sendDailyVisits, sendHourlyVisits, sendServerStart, sendServerStop } from "./data";
 config();
 
 const DISCORD_WEBHOOK = process.env.DISCORD_WEBHOOK || "";
@@ -41,7 +41,13 @@ const main = async () => {
 
   app.listen(port, () => {
     console.log(`server started at http://localhost:${port}`);
+    sendServerStart(DISCORD_WEBHOOK);
   });
 };
 
 main();
+
+// sendServerStop on exit
+process.on("exit", () => {
+  sendServerStop(DISCORD_WEBHOOK);
+});
