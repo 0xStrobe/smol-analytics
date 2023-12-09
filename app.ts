@@ -21,7 +21,7 @@ app.post("/visit/*", (req, res) => {
 
 const handleHourly = async () => {
   try {
-    await sendHourlyVisits(DISCORD_WEBHOOK);
+    // await sendHourlyVisits(DISCORD_WEBHOOK);
 
     const now = new Date();
     const isUtc1Am = now.getUTCHours() === 1;
