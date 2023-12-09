@@ -68,12 +68,12 @@ const formatDiscordPayload = (mode: "hourly" | "daily", visits: [string, number]
   }, 0);
   const chart = top20
     .map(([route, visits]) => {
-      const blocks = Math.floor((visits / maxVisits) * 10);
-      return `${route.padEnd(longestRoute, " ")} ${"█".repeat(blocks)} ${visits}`;
+      const blocks = Math.floor((visits / maxVisits) * 40);
+      return `/${route.padEnd(longestRoute, " ")} ${"█".repeat(blocks)} ${visits}`;
     })
     .join("\n");
 
-  const unit = `each █ is ${Math.floor(maxVisits / 10)} visits`;
+  const unit = `each █ is ${Math.floor(maxVisits / 40)} visits`;
 
   const content = `**${mode} visits**\n\`\`\`\n${chart}\n\n${unit}\n\`\`\``;
 
